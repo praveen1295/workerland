@@ -1,0 +1,157 @@
+{
+  "signInPage":"***********************************************",
+
+    "welcome": "स्वागत है",
+    "change-language": "भाषा बदलें",
+    "Login-to-Your-Account": "अपने खाते में लॉगिन करें",
+    "Mobile-Number": "मोबाइल नंबर",
+    "Password": "पासवर्ड",
+    "Forgot-password": "पासवर्ड भूल गए",
+    "SIGN-IN": "साइन इन करें",
+    "Not-yet-a-member?": "अब तक सदस्य नहीं हैं?",
+    "Sign-up": "साइन अप",
+
+  "RegisterPage":"***********************************************",
+
+    "Images-Upload":"छवि अपलोड",
+    "Upload":"अपलोड",
+    "Skip":"स्किप",
+    "DOCUMENTS-MANDATORY-FOR-BOOK-SERVICES":"सेवाओं के लिए अनिवार्य दस्तावेज़",
+    "Upload-Profile-Image": "प्रोफ़ाइल छवि अपलोड करें",
+    "Upload-Aadhaar-Image": "आधार छवि अपलोड करें",
+    "Forgot-your-password": "अपना पासवर्ड भूल गए हैं",
+    "Enter-your-registered-number": "अपना पंजीकृत नंबर दर्ज करें अपना पासवर्ड पुनः प्राप्त करने के लिए",
+    "Phone-Number": "फोन नंबर *",
+    "Password-recovery": "पासवर्ड वापसी",
+
+    "Continue-as": "जारी रखें",
+    "Worker": "कार्मिक",
+    "Work-Provider": "कार्य प्रदाता",
+
+    "Create-New-Account": "नया खाता बनाएं",
+    "Name-Placeholder": "नाम *",
+    "Phone-Number-Placeholder": "मोबाइल नंबर *",
+    "Password-Placeholder": "पासवर्ड *",
+    "Confirm-Password-Placeholder": "पासवर्ड की पुष्टि करें *",
+    "Address-Placeholder": "पता *",
+    "Select-Category": "श्रेणी चुनें *",
+    "Select-Occupation": "व्यवसाय चुनें *",
+    "I-accept-the-terms-and-conditions": "मैं नियम और शर्तें स्वीकार करता हूँ",
+    "terms-and-conditions": "नियम और शर्तें",
+    "SIGN-UP": "साइन अप करें",
+    "Already-have-an-account?": "क्या आपका पहले से खाता है?",
+    "Login": "लॉगिन",
+
+    "HomePage":"***********************************************",
+
+
+    "Select-Range-Placeholder": "रेंज का चयन करें",
+    "Home":"होम",
+    "12,000-meter": "12,000 मीटर",
+    "15,000-meter": "15,000 मीटर",
+    "20,000-meter": "20,000 मीटर",
+    "25,000-meter": "25,000 मीटर",
+    "50,000-meter": "50,000 मीटर",
+    "75,000-meter": "75,000 मीटर",
+    "More-Information": "अधिक जानकारी",
+    "Booking-Screen": "बुकिंग स्क्रीन",
+
+    "Enter-your-work-description": "अपना काम का विवरण दर्ज करें:",
+    "Type-your-description-here": "यहाँ अपना विवरण टाइप करें...",
+    "Submit": "प्रस्तुत करें",
+
+    "ServiceProvider/UserPage":"***********************************************",
+
+    "Service-Provider": "सेवा प्रदाता",
+    "Adhaar-and-Profile-image-is-required": "आधार और प्रोफ़ाइल छवि की आवश्यकता है आदेश। कृपया अपना आधार और प्रोफ़ाइल छवि अपलोड करें",
+    "its's-look-like-worker-and-work-provider-are-same": "ऐसा दिखता है कि कामकाजी और काम प्रदाता एक ही हैं",
+    "Follow": "फॉलो करें",
+    "Reviews": "समीक्षा",
+    "Call-Now": "अभी कॉल करें:",
+    "Book-Service": "सेवा बुक करें",
+
+
+    "Write-your-review": "अपनी समीक्षा लिखें...",
+    "Submit-Review": "समीक्षा प्रस्तुत करें",
+    "No-reviews-found": "कोई समीक्षा नहीं मिली",
+    "Load-More": "अधिक लोड करें",
+
+    "Enter-search-query": "खोज क्वेरी दर्ज करें",
+    "Search": "खोजें",
+    "Service-Providers": "सेवा प्रदाता",
+
+    "Service-Providers-Details": "सेवा प्रदाता का विवरण",
+    "Worker-Details": "कामकाजी विवरण",
+    "My-Services": "मेरी सेवाएं",
+    "Approve": "मंजूर",
+    "Reject": "मना करें",
+    "Adhaar-Profile-Image-Required": "आधार और प्रोफ़ाइल छवि की आवश्यकता है आदेश के लिए। कृपया अपना आधार और प्रोफ़ाइल छवि अपलोड करें",
+    "Installation-Maintenance-Services": "पानी के ड्रम स्थापित करना पानी की पाइपों की देखभाल और सफाई की स्थापना पानी के पंप स्थापित करना पानी के नलों की स्थापना और रखरखाव",
+
+
+    "MyAccountPage":"************************************************",
+
+    "My-Account": "मेरा खाता",
+    "Edit": "एडिट",
+    "Description": "विवरण",
+    "More": "अधिक",
+    "Information": "जानकारी",
+    "Payments": "भुगतान",
+    "New-Card": "नया कार्ड",
+    "Order-History": "आदेश इतिहास",
+
+    "MorePage":"************************************************",
+
+
+    "Wallet": "बटुआ",
+    "Wishlist": "इच्छा-सूची",
+    "Setting": "सेटिंग",
+    "Address": "पता",
+    "Payment-Method": "भुगतान विधि",
+    "Find-The-Nearest": "सबसे निकट स्थान खोजें",
+    "My-Orders": "मेरे आदेश",
+    "My-Availability": "मेरी उपलब्धता",
+   
+
+    "settingPage":"***********************************************",
+
+    "Logout": "लॉग आउट",
+    "Language": "भाषा",
+    "My Availability": "मेरी उपलब्धता",
+
+
+    "MyOrdersPages":"***********************************************",
+
+
+    "Pending-Requests": "विचाराधीन अनुरोध",
+    "Accepted/Completed": "स्वीकृत/पूर्ण",
+    "Rejected/Cancel": "अस्वीकृत/रद्द",
+
+    "cancelled-by-service-provider": "सेवा प्रदाता द्वारा रद्द",
+    "cancelled-by-user": "उपयोगकर्ता द्वारा रद्द",
+    "Appointment-Time": "अपॉइंटमेंट समय",
+    "Appointment-Date": "अपॉइंटमेंट तिथि",
+    "Booking-Date": "बुकिंग की तिथि",
+    "Status": "स्थिति",
+    "Accept": "स्वीकार करें",
+    "Cancel": "रद्द करें",
+
+    "Location":"स्थान",
+    "Total-Orders": "कुल आदेश",
+    "Payment-Pending": "भुगतान लंबित",
+    "Incomplete": "अपूर्ण",
+
+    "BookingPages":"***********************************************",
+
+    "Please-select-date": "कृपया तारीख चुनें",
+    "Book-Your-Order": "अपना आदेश बुक करें",
+    "Update-your-availability": "अपनी उपलब्धता अपडेट करें:",
+    "Available": "उपलब्ध",
+    "Not-Available": "उपलब्ध नहीं है",
+    "Booking-Detail": "बुकिंग विवरण",
+    "Adhaar-and-Profile-image": "आधार और प्रोफ़ाइल छवि आदेश के लिए आवश्यक है। कृपया अपनी आधार और प्रोफ़ाइल छवि अपलोड करें"
+ 
+
+    
+  }
+  

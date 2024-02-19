@@ -1,0 +1,15 @@
+module.exports = {
+  NODE_ENV,
+  PORT,
+  DB_PASSWORD,
+  DB_DATABASE,
+  SECRET_KEY,
+  LOG_FORMAT,
+  LOG_DIR,
+  ORIGIN,
+  DB_ENGINE,
+  PROFILE_PHOTO_DIR,
+  AADHAR_PHOTO_DIR,
+  FILE_DIR,
+  BACKEND_URL,
+} = process.env;

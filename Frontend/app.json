@@ -1,0 +1,58 @@
+{
+  "expo": {
+    "name": "workerland",
+    "slug": "workerland",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "config": {
+        "googleMapsApiKey": "AIzaSyBuyFRVvctiWCy6B8oCb6YEx-CKBK4QTeU"
+      },
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Allow access to your photo library to upload images.",
+        "NSCameraUsageDescription": "Allow access to your camera to take photos.",
+        "NSLocationWhenInUseUsageDescription": "Allow access to your location while using the app.",
+        "NSLocationAlwaysUsageDescription": "Allow access to your location even when the app is closed."
+      },
+      "bundleIdentifier": "com.bankhedepraveen12.csrs"
+    },
+    "android": {
+      "useNextNotificationsApi": true,
+      "config": {
+        "enableHermes": false,
+        "googleMaps": {
+          "apiKey": "AIzaSyBuyFRVvctiWCy6B8oCb6YEx-CKBK4QTeU"
+        }
+      },
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.bankhedepraveen12.csrs",
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+ 
+    }
+  }
+}

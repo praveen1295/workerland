@@ -1,0 +1,147 @@
+{
+
+  "signInPage":"*************************************************",
+  "change-language": "Change language",
+  "welcome": "Welcome to my app",
+  "Login-to-Your-Account": "Login to Your Account",
+  "Mobile-Number": "Mobile Number",
+  "Password": "Password",
+  "Forgot-password": "Forgot password",
+  "SIGN-IN": "SIGN IN",
+  "Not-yet-a-member?": "Not yet a member?",
+  "Sign-up": "Sign up",
+
+
+  "RegisterPage":"***********************************************",
+
+  "Images-Upload":"Images Upload",
+  "Upload":"Upload",
+    "Skip":"Skip",
+  "DOCUMENTS-MANDATORY FOR-BOOK-SERVICES":"DOCUMENTS MANDATORY FOR BOOK SERVICES",
+  "Upload-Profile-Image": "Upload Profile Image",
+  "Upload-Aadhaar-Image": "Upload Aadhaar Image",
+  "Forgot-your-password": "Forgot your password",
+  "Enter-your-registered-number": "Enter your registered number to retrieve your password",
+  "Phone-Number": "Phone Number *",
+  "Password-recovery": "Password recovery",
+
+  "Continue-as": "Continue as",
+  "Worker": "Worker",
+  "Work-Provider": "Work Provider",
+
+  "Create-New-Account": "Create New Account",
+  "Name-Placeholder": "Name *",
+  "Phone-Number-Placeholder": "Phone Number *",
+  "Password-Placeholder": "Password *",
+  "Confirm-Password-Placeholder": "Confirm Password *",
+  "Address-Placeholder": "Address *",
+  "Select-Category": "Select Category *",
+  "Select-Occupation": "Select Occupation *",
+  "I-accept-the-terms-and-conditions": "I accept the terms and conditions",
+  "terms-and-conditions": "terms and conditions",
+  "SIGN-UP": "SIGN UP",
+  "Already-have-an-account?": "Already have an account?",
+  "Login": "Login",
+
+
+  "HomePage":"************************************************",
+
+
+
+  "Select-Range-Placeholder": "Select Range",
+  "12,000-meter": "12,000 meter",
+  "15,000-meter": "15,000 meter",
+  "20,000-meter": "20,000 meter",
+  "25,000-meter": "25,000 meter",
+  "50,000-meter": "50,000 meter",
+  "75,000-meter": "75,000 meter",
+  "More-Information": "More Information",
+  "Booking-Screen": "BookingScreen",
+
+  "Enter-your-work-description": "Enter your work description:",
+  "Type-your-description-here": "Type your description here...",
+  "Submit": "Submit",
+
+  "ServiceProvider/UserPage":"************************************************",
+
+
+
+  "Service-Provider": "Service Provider",
+  "Adhaar-and-Profile-image-is-required": "Adhaar and Profile image is required for order. Plese upload your Adhaar and Profile image",
+  "its's-look-like-worker-and-work-provider-are-same": "its's look like worker and work provider are same",
+  "Follow": "Follow",
+  "Reviews": "Reviews",
+  "Call-Now": "Call Now:",
+  "Book-Service": "Book Service",
+
+  "Write-your-review": "Write your review...",
+  "Submit-Review": "Submit Review",
+  "No-reviews-found": "No reviews found",
+  "Load-More": "Load More",
+  "Enter-search-query": "Enter search query",
+  "Search": "Search",
+  "Service-Providers": "Service Providers",
+
+  "Service-Providers-Details": "Service Provider's Details",
+  "Worker-Details": "Worker Details",
+  "My-Services": "My Services",
+  "Approve": "Approve",
+  "Reject": "Reject",
+  "Adhaar-Profile-Image-Required": "Adhaar and Profile image is required for order. Plese upload your Adhaar and Profile image",
+  "Installation-Maintenance-Services": "Installing water drums Maintenance of water pipes Maintenance and installation of sanitation Installing water pumps Installing water taps",
+
+  "MyAccountPage":"************************************************",
+
+    "My-Account": "My Account",
+    "Edit": "Edit",
+    "Description": "Description",
+    "More": "More",
+    "Information": "Information",
+    "Payments": "Payments",
+    "New-Card": "New Card",
+    "Order-History": "Order History",
+
+
+  "SettingPage":"************************************************",
+
+  "Logout": "Logout",
+  "Language": "Language",
+  "Address": "Address",
+  "My Availability": "My Availability",
+  "Setting": "Setting",
+
+  "MyOrderPages":"************************************************",
+
+  "Pending-Requests": "Pending Requests",
+  "Accepted/Completed": "Accepted/Completed",
+  "Rejected/Cancel": "Rejected/Cancel",
+
+  "cancelled-by-service-provider": "cancelled by service provider",
+  "cancelled-by-user": "cancelled by user",
+  "Appointment-Time": "Appointment Time",
+  "Appointment-Date": "Appointment Date",
+  "Booking-Date": "Booking Date",
+  "Status": "Status",
+  "Accept": "Accept",
+  "Cancel": "Cancel",
+
+
+  "Total-Orders": "Total Orders",
+  "Payment-Pending": "Payment Pending",
+  "Incomplete": "Incomplete",
+  "Location":"Location",
+  "My-Orders": "My Orders",
+
+  "BookingPages":"***********************************************",
+
+  "Please-select-date": "Please select date",
+  "My-Availability": "My Availability",
+  "Book-Your-Order": "Book Your Order",
+  "Update-your-availability": "Update your availability:",
+  "Available": "Available",
+  "Not-Available": "Not Available",
+
+  "Booking-Detail": "Booking Detail",
+  "Adhaar-and-Profile-image": "Adhaar and Profile image is required for order. Plese upload your Adhaar and Profile image"
+
+}
