@@ -16,23 +16,25 @@ import languagesList from "../../utils/services/languagesList.json";
 
 import Header from "../../common/Header";
 import { useNavigation } from "@react-navigation/native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getUserDataApiCall } from "../AdminOrder/logic";
 import Loading from "../Loading";
 import { clearSession } from "../../utils/sessionManagement";
 import { apiFailureAction } from "../../commonApiLogic.Js";
 import LanguageModal from "../../common/LanguageModal";
-import { setLng } from "../../utils/storageService";
+import { getLng, setLng } from "../../utils/storageService";
+import { logoutApiCall } from "./logic";
+import Loader from "../../common/Loader";
 
 const moreData = ["Logout", "Language"];
 
 const serviceProviderVisibility = ["Address", "My Availability"];
 
 const Setting = ({ setSelectedTab }) => {
+  const { loading } = useSelector((state) => state?.logoutData);
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [userData, setUserData] = useState({});
-  const [loading, setLoading] = useState(false);
 
   const [userType, setUserType] = useState({});
   const [langModalVisible, setLangModalVisible] = useState();
@@ -45,8 +47,17 @@ const Setting = ({ setSelectedTab }) => {
     switch (item) {
       case "Logout": {
         clearSession();
-        alert("Logged out successfully");
-        navigation.navigate("Login");
+        dispatch(logoutApiCall({}))
+          .then((response) => {
+            if (response.payload.data.success) {
+              alert("Logged out successfully");
+              navigation.navigate("Login");
+            }
+          })
+          .catch((error) => {
+            console.log("logoutError", error);
+            dispatch(apiFailureAction.apiFailure(error));
+          });
         // RNRestart.restart();
         break;
       }
@@ -60,8 +71,14 @@ const Setting = ({ setSelectedTab }) => {
   };
 
   const changeLng = (lng) => {
-    setLng(lng);
-    i18next.changeLanguage(lng);
+    if (lng) {
+      i18next.changeLanguage(lng);
+      setLng(lng);
+    } else {
+      i18next.changeLanguage("en");
+      setLng("en");
+    }
+
     // setVisible(false);
   };
 
@@ -91,6 +108,9 @@ const Setting = ({ setSelectedTab }) => {
     );
   };
 
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <View style={styles.container}>
       <>

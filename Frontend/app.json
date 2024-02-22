@@ -16,23 +16,29 @@
     ],
     "ios": {
       "config": {
-        "googleMapsApiKey": "AIzaSyBuyFRVvctiWCy6B8oCb6YEx-CKBK4QTeU"
+        "googleMapsApiKey": ""
       },
       "supportsTablet": true,
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "Allow access to your photo library to upload images.",
         "NSCameraUsageDescription": "Allow access to your camera to take photos.",
         "NSLocationWhenInUseUsageDescription": "Allow access to your location while using the app.",
-        "NSLocationAlwaysUsageDescription": "Allow access to your location even when the app is closed."
+        "NSLocationAlwaysUsageDescription": "Allow access to your location even when the app is closed.",
+        "NSAllowsArbitraryLoads": true, 
+        "UIBackgroundModes": [
+          "location",
+          "fetch"
+        ]
       },
       "bundleIdentifier": "com.bankhedepraveen12.csrs"
     },
     "android": {
+      "googleServicesFile":"./google-services.json",
       "useNextNotificationsApi": true,
       "config": {
         "enableHermes": false,
         "googleMaps": {
-          "apiKey": "AIzaSyBuyFRVvctiWCy6B8oCb6YEx-CKBK4QTeU"
+          "apiKey": ""
         }
       },
       "adaptiveIcon": {
@@ -45,14 +51,20 @@
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE",
         "ACCESS_FINE_LOCATION",
-        "ACCESS_COARSE_LOCATION"
-      ]
+        "ACCESS_COARSE_LOCATION",
+        "VIBRATE"
+      ],
+      "notification": {
+        "icon": "./assets/icon.png",
+        "color": "#000000"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
- 
+      "eas": {
+      }
     }
   }
 }

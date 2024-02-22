@@ -43,8 +43,14 @@ const sendNotificationToAll = async (req, res) => {
     data: { title, body },
   }));
 
+  const notificationResponses = [];
+  expoPushTokens.forEach(async ({ token }) => {
+    const response = await sendNotification(title, body, token);
+    notificationResponses.push(response);
+  });
+
   // Send push notifications using the imported function
-  const notificationResponses = await sendNotification(title, body, messages);
+  // const notificationResponses = await sendNotification(title, body, token);
 
   if (notificationResponses.length > 0) {
     res.status(200).json({

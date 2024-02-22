@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -15,6 +15,9 @@ import { Avatar, Icon } from "react-native-elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import CommonBtn from "../../common/CommonButton";
 import { useTranslation } from "react-i18next";
+import LanguageModal from "../../common/LanguageModal";
+import i18next, { languageResources } from "../../utils/services/i18next";
+import { getLng, setLng } from "../../utils/storageService";
 
 const { width, height } = Dimensions.get("window");
 
@@ -23,7 +26,8 @@ const MyAccount = ({ userData: user, getUserData }) => {
   const route = useRoute();
   const { t } = useTranslation();
   // const { localServiceProvider } = route.params;
-
+  const [language, setLanguage] = useState("");
+  const [langModalVisible, setLangModalVisible] = useState();
   const orderNow = () => {};
   const callNow = () => {};
 
@@ -37,7 +41,7 @@ const MyAccount = ({ userData: user, getUserData }) => {
     switch (item) {
       case "Location":
         break;
-      case "Order History": {
+      case "Order-History": {
         if (user?.isAdmin) {
           navigation.navigate("AdminOrder", { userData: user });
         } else {
@@ -45,10 +49,31 @@ const MyAccount = ({ userData: user, getUserData }) => {
         }
         break;
       }
+      case "Language": {
+        setLangModalVisible(true);
+        break;
+      }
 
       default:
         break;
     }
+  };
+
+  const changeLng = (lng) => {
+    if (lng) {
+      i18next.changeLanguage(lng);
+      setLng(lng);
+    } else {
+      i18next.changeLanguage("en");
+      setLng("en");
+    }
+
+    // setVisible(false);
+  };
+
+  const onSelectLang = (selectedLang) => {
+    changeLng(selectedLang);
+    setLanguage(selectedLang);
   };
 
   const renderItem = ({ item, index }) => (
@@ -200,6 +225,13 @@ const MyAccount = ({ userData: user, getUserData }) => {
         </View> */}
       </View>
       {/* </View> */}
+      {langModalVisible && (
+        <LanguageModal
+          setLangModalVisible={setLangModalVisible}
+          langModalVisible={langModalVisible}
+          onSelectLang={onSelectLang}
+        />
+      )}
     </View>
   );
 };

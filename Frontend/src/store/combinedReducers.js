@@ -13,6 +13,7 @@ import getServiceProviderInfo from "../utils/getServiceProviderInfo";
 import getBookingReducer from "../screens/BookingDetail/logic";
 import forgetPasswordReducer from "../screens/ForgotPassword/logic";
 import otpReducer from "../screens/OTP/logic";
+import logoutReducer from "../screens/Setting/logic";
 export const combinedReducers = {
   ...loginReducer,
   ...localServiceProviders,
@@ -29,4 +30,5 @@ export const combinedReducers = {
   ...getBookingReducer,
   ...forgetPasswordReducer,
   ...otpReducer,
+  ...logoutReducer,
 };

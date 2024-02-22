@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  Alert,
+} from "react-native";
 
 import { useTranslation } from "react-i18next";
 import i18next, { languageResources } from "../../utils/services/i18next";
@@ -7,6 +13,8 @@ import languagesList from "../../utils/services/languagesList.json";
 
 import { Input, Text } from "react-native-elements";
 import * as Font from "expo-font";
+import messaging from "@react-native-firebase/messaging";
+
 import Svg, { Path, Text as SvgText } from "react-native-svg";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -45,6 +53,7 @@ const LoginForm = ({ setLoginState }) => {
   const responseListener = React.useRef();
 
   const handleLogin = () => {
+    console.log("ooooooooooooooooooooooooooooooo", expoPushToken);
     dispatch(loginApiCall({ phoneNumber: username, password, expoPushToken }))
       .then((response) => {
         console.log("loginResponse", response.payload.data);
@@ -77,40 +86,91 @@ const LoginForm = ({ setLoginState }) => {
     navigation.navigate("ForgotPassword", { setLoginState });
   };
 
+  const requestUserPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      console.log("Authorization status:", authStatus);
+    }
+  };
+
   useEffect(() => {
-    registerForPushNotificationsAsync().then((token) =>
-      setExpoPushToken(token)
-    );
+    if (requestUserPermission()) {
+      messaging()
+        .getToken()
+        .then((token) => {
+          setExpoPushToken(token);
+          console.log("Token", token);
+        });
+    } else {
+      console.log("error while getting token: ", authStatus);
+    }
 
-    notificationListener.current =
-      Notifications.addNotificationReceivedListener((notification) => {
-        setNotification(notification);
-      });
-
-    responseListener.current =
-      Notifications.addNotificationResponseReceivedListener((response) => {
-        const {
-          notification: {
-            request: {
-              content: {
-                data: { screen },
-              },
-            },
-          },
-        } = response;
-
-        console.log("screen", screen);
-        if (screen) {
-          props.navigation.navigate(screen);
+    messaging()
+      .getInitialNotification()
+      .then(async (remoteMessage) => {
+        if (remoteMessage) {
+          console.log(
+            "Notification caused app to open from quit state",
+            remoteMessage.notification
+          );
         }
       });
 
-    return () => {
-      Notifications.removeNotificationSubscription(
-        notificationListener.current
+    messaging().onNotificationOpenedApp(async (remoteMessage) => {
+      console.log(
+        "Notification caused app to open from background state: ",
+        remoteMessage.notification
       );
-      Notifications.removeNotificationSubscription(responseListener.current);
-    };
+    });
+
+    // Register background handler
+    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+      console.log("Message handled in the background!", remoteMessage);
+    });
+
+    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+      Alert.alert("A new FCM message arrived!", JSON.stringify(remoteMessage));
+    });
+
+    return unsubscribe;
+
+    // registerForPushNotificationsAsync().then((token) =>
+    //   setExpoPushToken(token)
+    // );
+
+    // notificationListener.current =
+    //   Notifications.addNotificationReceivedListener((notification) => {
+    //     setNotification(notification);
+    //   });
+
+    // responseListener.current =
+    //   Notifications.addNotificationResponseReceivedListener((response) => {
+    //     const {
+    //       notification: {
+    //         request: {
+    //           content: {
+    //             data: { screen },
+    //           },
+    //         },
+    //       },
+    //     } = response;
+
+    //     console.log("screen", screen);
+    //     if (screen) {
+    //       props.navigation.navigate(screen);
+    //     }
+    //   });
+
+    // return () => {
+    //   Notifications.removeNotificationSubscription(
+    //     notificationListener.current
+    //   );
+    //   Notifications.removeNotificationSubscription(responseListener.current);
+    // };
   }, []);
 
   const { width } = Dimensions.get("window");
@@ -120,6 +180,8 @@ const LoginForm = ({ setLoginState }) => {
   // if (loginLoading) {
   //   return <Loader />;
   // }
+
+  console.log("expoPushToken222", expoPushToken);
 
   return (
     <View style={styles.container}>

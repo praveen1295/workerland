@@ -81,12 +81,16 @@ const changeAccountStatusController = async (req, res) => {
             // data: { title, body },
           },
         ];
-
+        console.log("user", user, user.expoPushToken);
         // Send push notifications using the imported function
         const notificationResponses = await sendNotification(
           "Appointment verification",
           `🎉 Exciting News! your account verification status has been ${status}. 🚀`,
-          messages
+          user.expoPushToken,
+          {
+            title: "Appointment verification",
+            body: `🎉 Exciting News! your account verification status has been ${status}. 🚀`,
+          }
         );
 
         if (user.isServiceProvider) {

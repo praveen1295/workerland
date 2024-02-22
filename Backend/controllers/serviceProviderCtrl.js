@@ -127,7 +127,11 @@ const updateBookingStatusController = async (req, res) => {
     const notificationResponses = await sendNotification(
       "Appointment verification",
       `🎉 Exciting News! your account verification status has been ${status}. 🚀`,
-      messages
+      user.expoPushToken,
+      {
+        title: "Appointment verification",
+        body: `🎉 Exciting News! your account verification status has been ${status}. 🚀`,
+      }
     );
 
     res.status(200).send({
@@ -246,7 +250,11 @@ const updateBookingStatusController11 = async (req, res) => {
     const notificationResponses = await sendNotification(
       "Appointment status updated",
       `🎉 Exciting News! your appointment booking status has been ${status}. 🚀`,
-      messages
+      user.expoPushToken,
+      {
+        title: "Appointment status updated",
+        body: `🎉 Exciting News! your appointment booking status has been ${status}. 🚀`,
+      }
     );
 
     res.status(200).send({

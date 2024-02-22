@@ -16,7 +16,7 @@ const LanguageModal = ({
   setLangModalVisible,
   onSelectLang,
 }) => {
-  const [selectedLang, setSelectedLang] = useState(0);
+  const [selectedLang, setSelectedLang] = useState("en");
   const [languages, setLangauges] = useState([
     { name: "English", selected: true },
     { name: "हिन्दी", selected: false },

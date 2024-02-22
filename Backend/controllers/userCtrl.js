@@ -7,7 +7,7 @@ const moment = require("moment");
 const connectDB = require("../config/db");
 const axios = require("axios");
 const textflow = require("textflow.js");
-const { G_response } = require("../dummy");
+// const { G_response } = require("../dummy");
 const otpGenerator = require("otp-generator");
 const {
   generateDateObject,
@@ -20,8 +20,9 @@ textflow.useKey(process.env.TEXTFLOW_KEY);
 
 var cron = require("node-cron");
 
-const accountSid = "AC6a81a9ed57358553315efafec7d7517e";
-const authToken = "b99c223b93e8cf6234ee1e72f5b6da7c";
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+console.log("twilio", accountSid, authToken);
 const client = require("twilio")(accountSid, authToken);
 
 let otpStore = {};
@@ -91,11 +92,11 @@ const registerController = async (req, res) => {
       : "";
     const add = req.body.address;
 
-    // const G_response = await axios.get(
-    //   `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-    //     add
-    //   )}&key=${process.env.GOOGLE_GEOLOCATION_KEY}`
-    // );
+    const G_response = await axios.get(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+        add
+      )}&key=${process.env.GOOGLE_GEOLOCATION_KEY}`
+    );
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -161,7 +162,11 @@ const registerController = async (req, res) => {
       const notificationResponses = await sendNotification(
         "new worker request",
         `🎉 Exciting News! ${newUser.name} Has Applied For A worker Account.🚀`,
-        messages
+        adminUser.expoPushToken,
+        {
+          title: "new worker request",
+          body: `🎉 Exciting News! ${newUser.name} Has Applied For A worker Account.🚀`,
+        }
       );
     } else if (isServiceProvider === "true" || isServiceProvider === true) {
       requestData = {
@@ -201,10 +206,20 @@ const registerController = async (req, res) => {
       ];
 
       // Send push notifications using the imported function
+      // const notificationResponses = await sendNotification(
+      //   "new work provider request",
+      //   `🎉 Exciting News! ${newUser.name} Has Applied For A work provider Account.🚀`,
+      //   messages
+      // );
+
       const notificationResponses = await sendNotification(
         "new work provider request",
         `🎉 Exciting News! ${newUser.name} Has Applied For A work provider Account.🚀`,
-        messages
+        adminUser.expoPushToken,
+        {
+          title: "new work provider request",
+          body: `🎉 Exciting News! ${newUser.name} Has Applied For A work provider Account.🚀`,
+        }
       );
     }
 
@@ -305,42 +320,36 @@ const sendOtp = async (req, res) => {
     return res.status(400).send("Phone number is required");
   }
 
-  const user = await userModel.findOne({ phoneNumber });
-  if (forgetPassword) {
-    if (!user) {
+  try {
+    const user = await userModel.findOne({ phoneNumber });
+    if (forgetPassword && !user) {
       return res
-        .status(201)
+        .status(404)
         .send({ message: "User not found", success: false });
     }
+
+    const otp = otpGenerator.generate(4, {
+      upperCaseAlphabets: false,
+      specialChars: false,
+      lowerCaseAlphabets: false,
+    });
+
+    otpStore[phoneNumber] = otp;
+
+    console.log("otpStore111", otpStore);
+
+    await client.messages.create({
+      body: `Your OTP verification for ${phoneNumber} is: ${otp}`,
+      from: "+16592712981",
+      // messagingServiceSid: "MGc8d7546f15822febc2f8637bdf8c97d1",
+      to: `+91${phoneNumber}`,
+    });
+
+    res.status(200).send("OTP sent successfully");
+  } catch (error) {
+    console.error("Error sending OTP:", error);
+    res.status(500).send("Failed to send OTP");
   }
-
-  const otp = otpGenerator.generate(4, {
-    upperCaseAlphabets: false,
-    specialChars: false,
-    lowerCaseAlphabets: false,
-  });
-
-  otpStore[phoneNumber] = otp;
-
-  console.log("otpStore111", otpStore);
-
-  // client.messages
-  //   .create({
-  //     body: `Your OTP verification for ${phoneNumber} is: ${otp}`,
-  //     from: "+16592712981",
-  //     // messagingServiceSid: "MGc8d7546f15822febc2f8637bdf8c97d1",
-  //     to: `+91${phoneNumber}`,
-  //   })
-  //   .then(() => {
-  //     res.status(200).send("OTP sent successfully");
-  //   })
-  //   .catch((err) => {
-  //     console.error("Error sending OTP:", err);
-  //     res.status(500).send("Failed to send OTP");
-  //   });
-  res
-    .status(200)
-    .send({ success: true, message: "OTP sent successfully " + otp });
 };
 
 const verifyOtp = async (req, res) => {
@@ -412,6 +421,32 @@ const forgetPassword = async (req, res) => {
   }
 };
 
+const logoutCtr = async (req, res) => {
+  const { userId } = req.body;
+
+  try {
+    // Update the user's password
+    const updatedUser = await userModel.findOneAndUpdate(
+      { _id: userId },
+      { expoPushToken: "" }
+    );
+
+    // Check if the user exists and password updated successfully
+    if (!updatedUser) {
+      return res
+        .status(404)
+        .send({ success: false, message: "User not found" });
+    }
+
+    // Send success response
+    res.status(200).send({ success: true, message: "Logged out successfully" });
+  } catch (error) {
+    // Log and send error response
+    console.error("Error logged out:", error);
+    res.status(500).send({ success: false, message: "Internal server error" });
+  }
+};
+
 const verify = async (req, res) => {
   const { phoneNumber, oldPhone } = req.body;
   let verify1 = "";
@@ -468,11 +503,13 @@ const loginController = async (req, res) => {
     result.password = null;
 
     // Update expoPushToken and save the user
-
+    console.log("expoPushToken", expoPushToken);
     const newUser = await userModel.findOneAndUpdate(
       { phoneNumber },
       { expoPushToken }
     );
+    console.log("expoPushToken22", expoPushToken);
+
     // user.expoPushToken = expoPushToken;
     // await user.save();
 
@@ -624,7 +661,11 @@ const applyServiceProviderController = async (req, res) => {
     const notificationResponses = await sendNotification(
       "new work provider request",
       `🎉 Exciting News! ${newUser.name} Has Applied For A work provider Account.🚀`,
-      messages
+      adminUser.expoPushToken,
+      {
+        title: "new work provider request",
+        body: `🎉 Exciting News! ${newUser.name} Has Applied For A work provider Account.🚀`,
+      }
     );
 
     await userModel.findByIdAndUpdate(adminUser._id, { notification });
@@ -932,25 +973,29 @@ const bookAppointmentController11 = async (req, res) => {
     for (let serviceProvider of serviceProviders) {
       // const slotToUpdate = serviceProvider.timeSlots[date];
 
-      const newUser = await userModel.find({
+      const newUser = await userModel.findOne({
         _id: serviceProvider.userId,
       });
 
       // Prepare the push notifications
-      const messages = newUser.map(({ expoPushToken }) => ({
-        to: expoPushToken,
-        sound: "default",
-        title: "new service booking request",
-        body: "🎉 Exciting News! You've just received a new service booking request. Check it out now and provide your exceptional service. 🚀",
-        // data: { title, body },
-      }));
+      // const messages = newUser.map(({ expoPushToken }) => ({
+      //   to: expoPushToken,
+      //   sound: "default",
+      //   title: "new service booking request",
+      //   body: "🎉 Exciting News! You've just received a new service booking request. Check it out now and provide your exceptional service. 🚀",
+      //   // data: { title, body },
+      // }));
 
       const sendNotiFun = async () => {
         // Send push notifications using the imported function
         const notificationResponses = await sendNotification(
           "new service booking request",
           "🎉 Exciting News! You've just received a new service booking request. Check it out now and provide your exceptional service. 🚀",
-          messages
+          newUser.expoPushToken,
+          {
+            title: "new service booking request",
+            body: "🎉 Exciting News! You've just received a new service booking request. Check it out now and provide your exceptional service. 🚀",
+          }
         );
 
         const newServiceProvider = await userModel.findOne({
@@ -1486,4 +1531,5 @@ module.exports = {
   sendOtp,
   verifyOtp,
   forgetPassword,
+  logoutCtr,
 };

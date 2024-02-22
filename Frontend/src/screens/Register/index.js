@@ -11,10 +11,12 @@ import i18next, { languageResources } from "../../utils/services/i18next";
 import languagesList from "../../utils/services/languagesList.json";
 import { serviceTypeRR } from "../../dummy";
 import { Input, Text, CheckBox } from "react-native-elements";
+import messaging from "@react-native-firebase/messaging";
+
 import { Picker } from "@react-native-picker/picker";
 import RNPickerSelect from "react-native-picker-select";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { registerApiCall, verifyMobileApiCall } from "./logic"; // Import your registration API call logic
 import * as ImagePicker from "expo-image-picker";
@@ -30,6 +32,7 @@ import SubcategoryModal from "./SubCategoryModal";
 import * as Notifications from "expo-notifications";
 import { registerForPushNotificationsAsync } from "../../utils/service";
 import { sendOtpApiCall } from "../OTP/logic";
+import Loader from "../../common/Loader";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -132,6 +135,7 @@ var professionsArray = [
 
 const categories = ["Work Provider", "Worker"];
 const Register = () => {
+  const { loading } = useSelector((state) => state.sendOtpData);
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const route = useRoute();
@@ -157,43 +161,130 @@ const Register = () => {
   const notificationListener = React.useRef();
   const responseListener = React.useRef();
 
+  const requestUserPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      console.log("Authorization status:", authStatus);
+    }
+  };
+
   useEffect(() => {
-    registerForPushNotificationsAsync().then((token) =>
-      setExpoPushToken(token)
-    );
+    if (requestUserPermission()) {
+      messaging()
+        .getToken()
+        .then((token) => {
+          setExpoPushToken(token);
+          console.log("TokenRegister", token);
+        });
+    } else {
+      console.log("error while getting token: ", authStatus);
+    }
 
-    // This listener is fired whenever a notification is received while the app is foregrounded
-    notificationListener.current =
-      Notifications.addNotificationReceivedListener((notification) => {
-        setNotification(notification);
-      });
-
-    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
-    responseListener.current =
-      Notifications.addNotificationResponseReceivedListener((response) => {
-        const {
-          notification: {
-            request: {
-              content: {
-                data: { screen },
-              },
-            },
-          },
-        } = response;
-
-        // When the user taps on the notification, this line checks if they //are suppose to be taken to a particular screen
-        if (screen) {
-          props.navigation.navigate(screen);
+    messaging()
+      .getInitialNotification()
+      .then(async (remoteMessage) => {
+        if (remoteMessage) {
+          console.log(
+            "Notification caused app to open from quit state",
+            remoteMessage.notification
+          );
         }
       });
 
-    return () => {
-      Notifications.removeNotificationSubscription(
-        notificationListener.current
+    messaging().onNotificationOpenedApp(async (remoteMessage) => {
+      console.log(
+        "Notification caused app to open from background state: ",
+        remoteMessage.notification
       );
-      Notifications.removeNotificationSubscription(responseListener.current);
-    };
+    });
+
+    // Register background handler
+    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+      console.log("Message handled in the background!", remoteMessage);
+    });
+
+    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+      Alert.alert("A new FCM message arrived!", JSON.stringify(remoteMessage));
+    });
+
+    return unsubscribe;
+
+    // registerForPushNotificationsAsync().then((token) =>
+    //   setExpoPushToken(token)
+    // );
+
+    // notificationListener.current =
+    //   Notifications.addNotificationReceivedListener((notification) => {
+    //     setNotification(notification);
+    //   });
+
+    // responseListener.current =
+    //   Notifications.addNotificationResponseReceivedListener((response) => {
+    //     const {
+    //       notification: {
+    //         request: {
+    //           content: {
+    //             data: { screen },
+    //           },
+    //         },
+    //       },
+    //     } = response;
+
+    //     console.log("screen", screen);
+    //     if (screen) {
+    //       props.navigation.navigate(screen);
+    //     }
+    //   });
+
+    // return () => {
+    //   Notifications.removeNotificationSubscription(
+    //     notificationListener.current
+    //   );
+    //   Notifications.removeNotificationSubscription(responseListener.current);
+    // };
   }, []);
+
+  // useEffect(() => {
+  //   registerForPushNotificationsAsync().then((token) =>
+  //     setExpoPushToken(token)
+  //   );
+
+  //   // This listener is fired whenever a notification is received while the app is foregrounded
+  //   notificationListener.current =
+  //     Notifications.addNotificationReceivedListener((notification) => {
+  //       setNotification(notification);
+  //     });
+
+  //   // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+  //   responseListener.current =
+  //     Notifications.addNotificationResponseReceivedListener((response) => {
+  //       const {
+  //         notification: {
+  //           request: {
+  //             content: {
+  //               data: { screen },
+  //             },
+  //           },
+  //         },
+  //       } = response;
+
+  //       // When the user taps on the notification, this line checks if they //are suppose to be taken to a particular screen
+  //       if (screen) {
+  //         props.navigation.navigate(screen);
+  //       }
+  //     });
+
+  //   return () => {
+  //     Notifications.removeNotificationSubscription(
+  //       notificationListener.current
+  //     );
+  //     Notifications.removeNotificationSubscription(responseListener.current);
+  //   };
+  // }, []);
 
   const handleProfilePhotoUpload = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -288,6 +379,10 @@ const Register = () => {
   };
 
   const handleTermsAndConditions = () => {};
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <View style={styles.container}>

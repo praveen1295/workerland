@@ -18,6 +18,7 @@ const {
   sendOtp,
   verifyOtp,
   forgetPassword,
+  logoutCtr,
 } = require("../controllers/userCtrl");
 const { upload } = require("../middlewares/fileUploadMiddleware");
 const { body } = require("express-validator");
@@ -92,6 +93,8 @@ router.post(
   //  authMiddleware,
   forgetPassword
 );
+
+router.get("/logout", authMiddleware, logoutCtr);
 
 //Booking Avliability
 router.post(

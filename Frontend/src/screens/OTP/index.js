@@ -10,7 +10,7 @@ import {
 import React, { useState, useEffect, useRef } from "react";
 import { Input, Text } from "react-native-elements";
 import * as Font from "expo-font";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { registerApiCall, verifyMobileApiCall } from "../Register/logic";
 import { serviceProviders } from "../../dummy";
@@ -21,6 +21,7 @@ import apiClient from "../../utils";
 import { showToast } from "../../common/toast";
 import { forgetPasswordApiCall } from "../ForgotPassword/logic";
 import { sendOtpApiCall, verifyOtpApiCall } from "./logic";
+import Loader from "../../common/Loader";
 const inputs = Array(4).fill("");
 let newInputIndex = 0;
 
@@ -35,6 +36,14 @@ async function loadFonts() {
 }
 
 const OTP = () => {
+  // const { loading: verifyLoading } = useSelector(
+  //   (state) => state.verifyOtpData
+  // );
+
+  // const { loading: registerLoading } = useSelector(
+  //   (state) => state.registerData
+  // );
+
   const inputRef = useRef();
   const route = useRoute();
   const { userData, forgetPasswordData, setLoginState } = route.params;
@@ -59,6 +68,7 @@ const OTP = () => {
   const [seconds, setSeconds] = useState(60);
   const [newPassword, setNewPassword] = useState();
   const [confirmNewPassword, setConfirmNewPassword] = useState();
+  const [loading, setLoading] = useState(false);
 
   const handleChangeText = (text, idx) => {
     const newOTP = { ...OTP };
@@ -103,15 +113,18 @@ const OTP = () => {
             response.payload.data.message
           );
         }
+        setLoading(false);
       })
       .catch((error) => {
         console.log("registerErr", error);
         dispatch(apiFailureAction.apiFailure(error));
+        setLoading(false);
       });
   };
 
   const handleVerifyOtp = (val) => {
     const data = userData ? userData : forgetPasswordData;
+    setLoading(true);
     dispatch(
       verifyOtpApiCall({
         phoneNumber: data.phoneNumber,
@@ -128,10 +141,12 @@ const OTP = () => {
             response.payload.data.message,
             response.payload.data.message
           );
+          setLoading(false);
         }
       })
       .catch((error) => {
         dispatch(apiFailureAction.apiFailure(error));
+        setLoading(false);
       });
   };
 
@@ -167,10 +182,12 @@ const OTP = () => {
             response.payload.data.message
           );
         }
+        setLoading(false);
       })
       .catch((error) => {
         console.log("registerErr", error);
         dispatch(apiFailureAction.apiFailure(error));
+        setLoading(false);
       });
   };
 
@@ -214,6 +231,10 @@ const OTP = () => {
       clearInterval(countdownInterval);
     };
   }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     // <View style={{ flex: 1, padding: 20, backgroundColor: "#263E57" }}>

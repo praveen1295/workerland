@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -15,12 +15,15 @@ import { Avatar, Icon } from "react-native-elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import CommonBtn from "../../common/CommonButton";
 import { useTranslation } from "react-i18next";
+import i18next, { languageResources } from "../../utils/services/i18next";
+import { getLng, setLng } from "../../utils/storageService";
+import LanguageModal from "../../common/LanguageModal";
 
 const { width, height } = Dimensions.get("window");
 const Information = [
   // "Location",
   "Order-History",
-  // "Language"
+  "Language",
 ];
 
 const AdminMyAccount = ({ userData: admin, getUserData }) => {
@@ -29,6 +32,9 @@ const AdminMyAccount = ({ userData: admin, getUserData }) => {
   const { t } = useTranslation();
   // const { localServiceProvider } = route.params;
 
+  const [language, setLanguage] = useState("");
+  const [langModalVisible, setLangModalVisible] = useState();
+
   const orderNow = () => {};
   const callNow = () => {};
 
@@ -36,7 +42,10 @@ const AdminMyAccount = ({ userData: admin, getUserData }) => {
     switch (item) {
       case "Order-History": {
         navigation.navigate("AdminOrder", { userData: admin });
-
+        break;
+      }
+      case "Language": {
+        setLangModalVisible(true);
         break;
       }
 
@@ -49,6 +58,25 @@ const AdminMyAccount = ({ userData: admin, getUserData }) => {
     navigation.navigate("EditProfile", { userData: admin, getUserData });
   };
 
+  const changeLng = (lng) => {
+    if (lng) {
+      i18next.changeLanguage(lng);
+      setLng(lng);
+    } else {
+      i18next.changeLanguage("en");
+      setLng("en");
+    }
+
+    // setVisible(false);
+  };
+
+  const onSelectLang = (selectedLang) => {
+    changeLng(selectedLang);
+
+    setLanguage(selectedLang);
+  };
+
+  useEffect(() => {}, [language]);
   const renderItem = ({ item, index }) => (
     <TouchableOpacity
       style={styles.itemContainer}
@@ -198,6 +226,13 @@ const AdminMyAccount = ({ userData: admin, getUserData }) => {
         </View>
       </View>
       {/* </View> */}
+      {langModalVisible && (
+        <LanguageModal
+          setLangModalVisible={setLangModalVisible}
+          langModalVisible={langModalVisible}
+          onSelectLang={onSelectLang}
+        />
+      )}
     </View>
   );
 };
