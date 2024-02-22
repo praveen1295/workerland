@@ -24,16 +24,16 @@
         "NSCameraUsageDescription": "Allow access to your camera to take photos.",
         "NSLocationWhenInUseUsageDescription": "Allow access to your location while using the app.",
         "NSLocationAlwaysUsageDescription": "Allow access to your location even when the app is closed.",
-        "NSAllowsArbitraryLoads": true, 
+        "NSAllowsArbitraryLoads": true,
         "UIBackgroundModes": [
           "location",
           "fetch"
         ]
       },
-      "bundleIdentifier": "com.bankhedepraveen12.csrs"
+      "bundleIdentifier": "com.workerlandapp12.workerland"
     },
     "android": {
-      "googleServicesFile":"./google-services.json",
+      "googleServicesFile": "./google-services.json",
       "useNextNotificationsApi": true,
       "config": {
         "enableHermes": false,
@@ -45,7 +45,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.bankhedepraveen12.csrs",
+      "package": "com.workerlandapp12.workerland",
       "permissions": [
         "CAMERA",
         "READ_EXTERNAL_STORAGE",
@@ -64,6 +64,7 @@
     },
     "extra": {
       "eas": {
+        "projectId": "146e772d-c5fe-4dc6-af33-bc4e73d6ef54"
       }
     }
   }
